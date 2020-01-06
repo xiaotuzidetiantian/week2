@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuxufang.week2.dao.CompanyMapper">
+
+	<!-- //将数据导入到数据库中 -->
+	<insert id="insert">
+		insert into t_company(id,gjz,tab,name,product,address,register,datea,yearDatea,yearStatus,agains) values
+		<foreach collection="list" item="c" separator=",">
+			(#{c,id},#{c.gjz},#{c.tab},#{c.name},#{c.product},#{c.address},#{c.register},#{c.datea},#{c.yearDatea},#{c.yearStatus},#{c.agains})
+		</foreach>
+	</insert>
+
+	<!-- //	10.公司年检查询列表（5分） -->
+	<select id="selects" resultType="Company">
+		select * from t_company
+		<where>
+			<if test="null!=id and id!=''">
+				and id like concat('%',#{id},'%')
+			</if>
+			<if test="null!=gjz and gjz!=''">
+				and gjz like concat('%',#{gjz},'%')
+			</if>
+			<if test="null!=tab and tab!=''">
+				and tab like concat('%',#{tab},'%')
+			</if>
+			<if test="null!=name and name!=''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="null!=product and product!=''">
+				and product like concat('%',#{product},'%')
+			</if>
+			<if test="null!=address and address!=''">
+				and address like concat('%',#{address},'%')
+			</if>
+			<if test="null!=register1 and register1!=''">
+				and register >= #{register1}
+			</if>
+			<if test="null!=register2 and register2!=''">
+				and register &lt;= #{register2}
+			</if>
+			<if test="null!=datea1 and datea1!=''">
+				and datea >= #{datea1}
+			</if>
+			<if test="null!=datea2 and datea2!=''">
+				and datea &lt;= #{datea2}
+			</if>
+			<if test="null!=yearDatea1 and yearDatea1!=''">
+				and yearDatea >= #{yearDatea1}
+			</if>
+			<if test="null!=yearDatea2 and yearDatea2!=''">
+				and yearDatea &lt;= #{yearDatea2}
+			</if>
+			<!-- <if test="null!=yearStatus">
+				and yearStatus = #{yearStatus}
+			</if> -->
+		</where>
+	</select>
+	
+	<update id="update">
+		update t_company set id=#{id},gjz=#{gjz},tab=#{tab},name=#{name},product=#{product},address=#{address},register=#{register},datea=#{datea},yearDatea=#{yearDatea},yearStatus=#{yearStatus},agains=#{agains} where id=#{id}
+	</update>
+</mapper>
